@@ -3,7 +3,7 @@ from src.core.log_setiings import setup_logging
 import logging
 from dotenv import load_dotenv
 
-from bot import BuhBot, BotConfig
+from src.bot.bot import BuhBot, BotConfig
 
 
 async def main():

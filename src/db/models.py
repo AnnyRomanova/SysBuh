@@ -50,7 +50,7 @@ class Task(Base):
     status = Column(Enum(TaskStatus), nullable=False, default=TaskStatus.todo)
 
     client_id = Column(Integer, ForeignKey("clients.id"), nullable=False)
-    assignee_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    executor_id = Column(Integer, ForeignKey("users.id"), nullable=False)
 
     client = relationship("Client", back_populates="tasks")
-    assignee = relationship("User", back_populates="tasks")
+    executor = relationship("User", back_populates="tasks")
