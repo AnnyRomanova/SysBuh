@@ -26,7 +26,7 @@ class User(Base):
     username = Column(String, nullable=True)
     role = Column(Enum(UserRole), nullable=False)
 
-    tasks = relationship("Task", back_populates="assignee")
+    tasks = relationship("Task", back_populates="executor")
 
 
 class Client(Base):
