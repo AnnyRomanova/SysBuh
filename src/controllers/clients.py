@@ -4,7 +4,7 @@ from sqlalchemy import select
 
 from db.models import Client
 from db.session import DatabaseConnector
-from schemas.model import ClientOut
+from schemas.model import ClientOut, ClientCreate
 
 logger = logging.getLogger(__name__)
 
@@ -35,8 +35,13 @@ class ClientController:
 
 
 
-    async def add_client(self, client_data) -> None:
-        pass
+    async def add_client(self, client_data: ClientCreate) -> None:
+        logger.info("Request to add new client to db")
+        async with self.db.session_maker() as session:
+            new_client = Client(**client_data.model_dump())
+            session.add(new_client)
+            await session.commit()
+
 
     async def delete_client(self, client_id) -> None:
         pass

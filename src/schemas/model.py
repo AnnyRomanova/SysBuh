@@ -7,7 +7,7 @@ from db.models import UserRole, TaskStatus
 
 class ClientCreate(BaseModel):
     name: str
-    inn: int
+    inn: str
     contact_email: str
 
     model_config = {
