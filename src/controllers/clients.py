@@ -5,6 +5,7 @@ from sqlalchemy import select
 from db.models import Client
 from db.session import DatabaseConnector
 from schemas.model import ClientOut, ClientCreate
+from src.exceptions import ClientNotFoundError
 
 logger = logging.getLogger(__name__)
 
@@ -43,8 +44,19 @@ class ClientController:
             await session.commit()
 
 
-    async def delete_client(self, client_id) -> None:
-        pass
+    async def delete_client(self, client_inn: str) -> None:
+        logger.info("Request to delete post")
+        async with self.db.session_maker() as session:
+            stmt = select(Client).where(Client.inn == client_inn)
+            cursor = await session.execute(stmt)
+            existing_client = cursor.scalar_one_or_none()
+
+            if not existing_client:
+                raise ClientNotFoundError("Клиент не найден")
+
+            await session.delete(existing_client)
+            await session.commit()
+        logger.info("Client deleted")
 
 
 client_controller: ClientController | None = None
